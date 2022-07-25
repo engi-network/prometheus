@@ -66,6 +66,12 @@ jobs:
           name: "Make .env"
           command: |
             python3 make_env.py >.env
+      - run:
+          name: "Build prometheus"
+          working_directory: "prometheus"
+          command: |
+            make build
+            
   deploy-staging:
     machine:
       image: ubuntu-2004:202201-01
@@ -94,6 +100,7 @@ workflows:
           requires:
             - build-test
           repo: "prometheus-staging"
+          path: "prometheus"
           name: "build-and-push-staging"
           create-repo: true
           tag: latest
@@ -115,8 +122,8 @@ workflows:
           context:
             - aws
       - deploy-staging:
-          requires:
-            - build-and-push-staging
+          #requires:
+          #  - build-and-push-staging
           context:
             - github
             - terraform
