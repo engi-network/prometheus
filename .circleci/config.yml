@@ -64,6 +64,9 @@ jobs:
       - checkout
       - run:
           name: "Build prometheus"
+          command: |
+            git submodule update --init
+          name: "Build prometheus"
           working_directory: "prometheus"
           command: |
             make build
